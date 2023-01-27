@@ -9,5 +9,6 @@ const commentController = require("../controllers/commentController");
 // });
 
 router.post("/api/auth/register", userController.register);
+router.post("/api/auth/login", userController.login);
 
 module.exports = router;

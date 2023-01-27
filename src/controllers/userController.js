@@ -1,3 +1,5 @@
+const UserModel = require("../models/userModel");
+
 const createUser = async (req, res) => {};
 
 const getUser = async (req, res) => {};

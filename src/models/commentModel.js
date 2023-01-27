@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-export const commentSchema = new mongoose.Schema({
+const commentSchema = new mongoose.Schema({
   authorEmail: {
     type: String,
     required: true,
@@ -17,4 +17,7 @@ export const commentSchema = new mongoose.Schema({
 
 const CommentModel = mongoose.model("comment", commentSchema);
 
-module.exports = CommentModel;
+module.exports = {
+  commentSchema,
+  CommentModel,
+};

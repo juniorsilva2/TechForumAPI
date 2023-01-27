@@ -3,14 +3,14 @@ mongoose.set("strictQuery", true);
 
 const connectToDatabase = async () => {
   await mongoose.connect(
-    `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DB}`,
+    `mongodb+srv://${process.env.ATLAS_USER}:${process.env.ATLAS_PASS}@techforum.kkebhuq.mongodb.net/?retryWrites=true&w=majority`,
     (error) => {
       if (error) {
         return console.log(
-          `Ocorreu um erro ao se conectar com o banco de dados: ${error}`
+          `Something gone wrong while connecting to database: ${error}`
         );
       }
-      return console.log("Conexão com o banco de dados realizada com sucesso!");
+      return console.log("Database connection successfully ");
     }
   );
 };

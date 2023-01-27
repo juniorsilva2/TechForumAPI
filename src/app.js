@@ -17,10 +17,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(routes);
 
-app.listen(process.env.EXPRESS_PORT, () =>
-  console.log(
-    `Rodando na URL: http://${process.env.EXPRESS_HOST}:${process.env.EXPRESS_PORT}`
-  )
-);
+app.listen(process.env.EXPRESS_PORT, () => console.log(`Running!`));
 
 module.exports = app;

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-import { commentSchema } from "./commentModel";
+const { commentSchema } = require("./commentModel");
 
 const postSchema = new mongoose.Schema({
   authorEmail: {

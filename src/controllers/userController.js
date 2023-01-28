@@ -86,12 +86,13 @@ const updateUser = async (req, res) => {
       Number(process.env.BCRYPT_SECRET)
     );
 
-    const userUpdated = await UserModel.findByIdAndUpdate(req.params.id, {
+    await UserModel.findByIdAndUpdate(req.params.id, {
       realName,
       password: hashedPassword,
       profilePic,
     });
 
+    const userUpdated = await UserModel.findById(req.params.id, "-password");
     res.status(200).json({ message: "User successfully updated", userUpdated });
   } catch (error) {
     console.log(error.message);

@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const { commentSchema } = require("./commentModel");
 
 const postSchema = new mongoose.Schema({
+  topic: {
+    type: String,
+    required: true,
+  },
   authorEmail: {
     type: String,
     required: true,

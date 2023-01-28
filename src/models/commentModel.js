@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const commentSchema = new mongoose.Schema({
+  postID: {
+    type: String,
+    required: true,
+  },
   authorEmail: {
     type: String,
     required: true,

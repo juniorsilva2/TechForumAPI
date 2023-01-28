@@ -4,19 +4,25 @@ const jwt = require("jsonwebtoken");
 const UserModel = require("../models/userModel");
 
 const login = async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password)
+    return res.status(400).json({ message: "Fields missing" });
+
+  const user = await UserModel.findOne({ email: email });
+  if (!user) return res.status(404).json({ message: "User not found" });
+
+  const checkPassword = await bcrypt.compare(password, user.password);
+  if (!checkPassword)
+    return res.status(401).json({ message: "Password is incorrect" });
+
   try {
-    const { email, password } = req.body;
-    if (!email || !password)
-      return res.status(400).json({ message: "Fields missing" });
-
-    const user = await UserModel.findOne(email);
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    const checkPassword = await bcrypt.compare(password, user.password);
-    if (!checkPassword)
-      return res.status(401).json({ message: "Password is incorrect" });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    res
+      .status(200)
+      .json({ message: "Authentication performed successfully", token });
   } catch (error) {
-    res.status(500).send(error.message);
+    console.log(error.message);
+    res.status(500).json({ message: "Server side error ocurred" });
   }
 };
 
@@ -47,15 +53,19 @@ const register = async (req, res) => {
       profilePic: `${process.env.DEFAULT_PROFILE_PIC}`,
     });
 
-    res.status(201).json("User successfully registered");
+    res.status(201).json({ message: "User successfully registered" });
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({ msg: "Server side error ocurred" });
+    res.status(500).json({ message: "Server side error ocurred" });
   }
 };
 
 const getUser = async (req, res) => {
   try {
+    const user = await UserModel.findById(req.params.id, "-password");
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.status(200).json(user);
   } catch (error) {
     res.status(500).send(error.message);
   }

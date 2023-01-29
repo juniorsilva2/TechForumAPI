@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
-const { commentSchema } = require("./commentModel");
 
 const postSchema = new mongoose.Schema({
-  topic: {
+  topicID: {
     type: String,
     required: true,
   },
@@ -14,7 +13,7 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  postText: {
+  content: {
     type: String,
     required: true,
   },
@@ -22,7 +21,6 @@ const postSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  comments: [commentSchema],
 });
 
 const PostModel = mongoose.model("post", postSchema);

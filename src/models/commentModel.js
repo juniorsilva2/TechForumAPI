@@ -9,7 +9,7 @@ const commentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  comment: {
+  content: {
     type: String,
     required: true,
   },
@@ -21,7 +21,4 @@ const commentSchema = new mongoose.Schema({
 
 const CommentModel = mongoose.model("comment", commentSchema);
 
-module.exports = {
-  commentSchema,
-  CommentModel,
-};
+module.exports = CommentModel;

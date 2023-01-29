@@ -4,7 +4,12 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const bodyParser = require("body-parser");
-const routes = require("./routes/routes");
+const publicUserRoutes = require("./routes/public/publicUserRoutes");
+const publicPostRoutes = require("./routes/public/publicPostRoutes");
+const privateUserRoutes = require("./routes/private/privateUserRoutes");
+const privateTopicRoutes = require("./routes/private/privateTopicRoutes");
+const privatePostRoutes = require("./routes/private/privatePostRoutes");
+const privateCommentRoutes = require("./routes/private/privateCommentRoutes");
 
 dotenv.config();
 connectToDatabase();
@@ -15,7 +20,12 @@ app.set("views", path.join(__dirname, "src/views"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(routes);
+app.use(publicUserRoutes);
+app.use(publicPostRoutes);
+app.use(privateUserRoutes);
+app.use(privateTopicRoutes);
+app.use(privatePostRoutes);
+app.use(privateCommentRoutes);
 
 app.listen(process.env.EXPRESS_PORT, () => console.log(`Running!`));
 

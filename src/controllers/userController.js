@@ -2,6 +2,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const UserModel = require("../models/userModel");
+const BlackListModel = require("../models/blackListModel");
+
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -22,6 +24,20 @@ const login = async (req, res) => {
     res
       .status(200)
       .json({ message: "Authentication performed successfully", token });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: "Server side error ocurred" });
+  }
+};
+
+const logout = async (req, res) => {
+  try {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+    const tokenString = token.toString();
+    await BlackListModel.create({token: tokenString});
+
+    res.status(200).json({ message: "Logout successful" });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: "Server side error ocurred" });
@@ -145,6 +161,7 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
   login,
+  logout,
   register,
   getUser,
   getUsers,

@@ -14,6 +14,6 @@ router.put(
   userController.updateAvatar
 );
 router.delete("/api/user/:id", checkToken, userController.deleteUser);
-router.get("/api/auth/logout", checkToken, userController.logout);
+router.post("/api/auth/logout", checkToken, userController.logout);
 
 module.exports = router;

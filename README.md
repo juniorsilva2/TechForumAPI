@@ -28,6 +28,28 @@ To deploy this project run.
   npm start
 ```
 
+## Environment Variables
+
+```bash
+  # Express API   
+  EXPRESS_HOST = localhost
+  EXPRESS_PORT = 3003
+
+  # MongoDB Local
+  MONGO_HOST = localhost
+  MONGO_PORT = 27017
+  MONGO_DB = TechForum
+
+  #Bcrypt API
+  BCRYPT_SECRET = 8
+
+  #JSON Web Token
+  JWT_SECRET = IOASHD123sdfEIOHWI4RJ12JK4ioqskdio
+
+  #Profile Pic save format
+  PROFILE_PIC_FORMAT = .jpeg
+```
+
 ## Authors
 
 - [Junior Silva](https://www.github.com/juniorsilva2)

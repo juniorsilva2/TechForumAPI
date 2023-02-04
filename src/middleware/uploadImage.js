@@ -6,6 +6,7 @@ module.exports = (multer({
       cb(null, process.cwd() + "/src/public/upload");
     },
     filename: function (req, file, cb) {
+      // Change this environment variable to .jpeg, .jpg or .png.
       cb(null, Date.now() + process.env.PROFILE_PIC_FORMAT);
     },
   }),

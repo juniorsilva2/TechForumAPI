@@ -25,6 +25,11 @@ app.use(privateTopicRoutes);
 app.use(privatePostRoutes);
 app.use(privateCommentRoutes);
 
-app.listen(process.env.EXPRESS_PORT, () => console.log(`Running at: http://${process.env.EXPRESS_HOST}:${process.env.EXPRESS_PORT}`));
+// Express Deployment 
+app.listen(process.env.EXPRESS_PORT, () => console.log(`Running at: ${process.env.EXPRESS_HOST}`));
+
+
+// Express Local
+// app.listen(process.env.EXPRESS_PORT, () => console.log(`Running at: http://${process.env.EXPRESS_HOST}:${process.env.EXPRESS_PORT}`));
 
 module.exports = app;

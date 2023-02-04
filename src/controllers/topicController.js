@@ -21,7 +21,7 @@ const createTopic = async (req, res) => {
 
 const getTopic = async (req, res) => {
   try {
-    const topic = await TopicModel.findById(req.params.id);
+    const topic = await TopicModel.findById(req.params.topicID);
     if (!topic) return res.status(404).json({ message: "Topic not found" });
     res.status(200).json(topic);
   } catch (error) {
@@ -47,11 +47,11 @@ const updateTopic = async (req, res) => {
     const { name } = req.body;
     if (!name) return res.status(404).json({ message: "Fields missing" });
 
-    const topic = await TopicModel.findById(req.params.id);
+    const topic = await TopicModel.findById(req.params.topicID);
     if (!topic) return res.status(404).json({ message: "Topic not found" });
 
-    await TopicModel.findByIdAndUpdate(req.params.id, req.body);
-    const topicUpdated = await TopicModel.findById(req.params.id);
+    await TopicModel.findByIdAndUpdate(req.params.topicID, req.body);
+    const topicUpdated = await TopicModel.findById(req.params.topicID);
     res
       .status(200)
       .json({ message: "Topic successfully updated", topicUpdated });
@@ -63,9 +63,9 @@ const updateTopic = async (req, res) => {
 
 const deleteTopic = async (req, res) => {
   try {
-    const topic = await TopicModel.findById(req.params.id);
+    const topic = await TopicModel.findById(req.params.topicID);
     if (!topic) return res.status(404).json({ message: "Topic not found" });
-    await TopicModel.findByIdAndDelete(req.params.id);
+    await TopicModel.findByIdAndDelete(req.params.topicID);
     res.status(200).json({ message: "Topic successfully deleted", topic });
   } catch (error) {
     console.log(error.message);

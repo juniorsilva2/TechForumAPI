@@ -4,16 +4,11 @@ const checkToken = require("../../middleware/Authorization");
 const uploadAvatar = require("../../middleware/uploadImage");
 const userController = require("../../controllers/userController");
 
-router.get("/api/user/:id", checkToken, userController.getUser);
+router.get("/api/user/:userID", checkToken, userController.getUser);
 router.get("/api/users", checkToken, userController.getUsers);
-router.put("/api/user/:id", checkToken, userController.updateUser);
-router.put(
-  "/api/user/avatar/:id",
-  checkToken,
-  uploadAvatar.single('image'),
-  userController.updateAvatar
-);
-router.delete("/api/user/:id", checkToken, userController.deleteUser);
-router.post("/api/auth/logout", checkToken, userController.logout);
+router.put("/api/user/:userID", checkToken, userController.updateUser);
+router.put("/api/user/avatar/:userID", checkToken, uploadAvatar.single('image'), userController.updateAvatar);
+router.delete("/api/user/:userID", checkToken, userController.deleteUser);
+router.get("/api/logout", checkToken, userController.logout);
 
 module.exports = router;

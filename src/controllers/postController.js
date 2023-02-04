@@ -4,24 +4,36 @@ const TopicModel = require("../models/topicModel");
 
 const createPost = async (req, res) => {
   try {
-    const { authorID, topicID } = req.params;
-    const authorIDExist = await UserModel.findById(authorID, { password: 0 });
+    const { userID, topicID } = req.params;
+    const userIDExist = await UserModel.findById(userID, { password: 0 });
     const topicIDExist = await TopicModel.findById(topicID);
-    if (!authorIDExist || !topicIDExist) return res.status(404).json({ message: "User or Topic not found." });
+    if (!userIDExist || !topicIDExist) return res.status(404).json({ message: "User or Topic not found." });
     
     const { title, content } = req.body;
     if (!title || !content) return res.status(400).json({ message: "Fields missing" });
 
+    function padTo2Digits(num) {
+      return num.toString().padStart(2, '0');
+    }
+    
+    function formatDate(date) {
+      return [
+        padTo2Digits(date.getDate()),
+        padTo2Digits(date.getMonth() + 1),
+        date.getFullYear(),
+      ].join('/');
+    }
+
     const post = await PostModel.create({
-      topicID,
-      authorID,
+      topic: topicID,
+      user: userIDExist._id,
       title,
       content,
-      date: new Date()
+      date: formatDate(new Date()),
     });
 
-    const reputationUpdated = Number(authorIDExist.reputation) + 10;
-    await UserModel.findByIdAndUpdate({ _id: authorID }, { reputation: reputationUpdated });
+    const reputationUpdated = Number(userIDExist.reputation) + 10;
+    await UserModel.findByIdAndUpdate({ _id: userIDExist._id }, { reputation: reputationUpdated });
     res.status(200).json({ message: "Post successfully created", post });
   } catch (error) {
     console.log(error.message);
@@ -31,7 +43,7 @@ const createPost = async (req, res) => {
 
 const getPost = async (req, res) => {
   try {
-    const post = await PostModel.findById(req.params.id);
+    const post = await PostModel.findById(req.params.postID);
     if (!post) return res.status(404).json({ message: "Post not found" });
     res.status(200).json(post);
   } catch (error) {
@@ -54,12 +66,12 @@ const getPosts = async (req, res) => {
 
 const updatePost = async (req, res) => {
   try {
-    const post = await PostModel.findById(req.params.id);
+    const post = await PostModel.findById(req.params.postID);
     if (!post) return res.status(404).json({ message: "Post not found" });
     const { title, content } = req.body;
     if (!title || !content) return res.status(400).json({ message: "Fields missing" });
     
-    const postUpdated = await PostModel.findByIdAndUpdate(req.params.id, req.body);
+    const postUpdated = await PostModel.findByIdAndUpdate(req.params.postID, req.body);
     res.status(200).json({ message: "Post successfully updated", postUpdated });
   } catch (error) {
     console.log(error.message);
@@ -69,9 +81,9 @@ const updatePost = async (req, res) => {
 
 const deletePost = async (req, res) => {
   try {
-    const post = await PostModel.findById(req.params.id);
+    const post = await PostModel.findById(req.params.postID);
     if (!post) return res.status(404).json({ message: "Post not found" });
-    await PostModel.findByIdAndDelete(req.params.id);
+    await PostModel.findByIdAndDelete(req.params.postID);
     res.status(200).json({ message: "Post successfully deleted", post });
   } catch (error) {
     console.log(error.message);

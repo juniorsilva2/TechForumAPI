@@ -52,10 +52,7 @@ const register = async (req, res) => {
     return res.status(400).json({ message: "Passwords do not match" });
 
   const userExist = await UserModel.findOne({ email });
-  if (userExist)
-    return res
-      .status(422)
-      .json({ message: "User already registered, try using another email" });
+  if (userExist) return res.status(422).json({ message: "User already registered, try using another email" });
 
   const hashedPassword = await bcrypt.hash(
     password,
@@ -81,7 +78,7 @@ const register = async (req, res) => {
 
 const getUser = async (req, res) => {
   try {
-    const user = await UserModel.findById(req.params.id, { password: 0 });
+    const user = await UserModel.findById(req.params.userID, { password: 0 });
     if (!user) return res.status(404).json({ message: "User not found" });
     res.status(200).json(user);
   } catch (error) {
@@ -104,8 +101,8 @@ const getUsers = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    const { realName, password, confirmPassword } = req.body;
-    if (!realName || !password || !confirmPassword)
+    const { userName, password, confirmPassword } = req.body;
+    if (!userName || !password || !confirmPassword)
       return res.status(400).json({ message: "Fields missing" });
     if (password !== confirmPassword)
       return res.status(400).json({ message: "Passwords do not match" });
@@ -115,12 +112,12 @@ const updateUser = async (req, res) => {
       Number(process.env.BCRYPT_SECRET)
     );
 
-    await UserModel.findByIdAndUpdate(req.params.id, {
-      realName,
+    await UserModel.findByIdAndUpdate(req.params.userID, {
+      userName,
       password: hashedPassword,
     });
 
-    const userUpdated = await UserModel.findById(req.params.id, {
+    const userUpdated = await UserModel.findById(req.params.userID, {
       password: 0,
     });
     res.status(200).json({ message: "User successfully updated", userUpdated });
@@ -136,10 +133,10 @@ const updateAvatar = async (req, res) => {
       return res.status(400).json({ message: "Please upload an image" });
     }
     
-    await UserModel.findByIdAndUpdate(req.params.id, {
+    await UserModel.findByIdAndUpdate(req.params.userID, {
       avatar: req.file.filename,
     });
-    const user = await UserModel.findById(req.params.id, { password: 0 });
+    const user = await UserModel.findById(req.params.userID, { password: 0 });
     res.status(200).json({ message: "Avatar successfully updated", user });
   } catch (error) {
     console.log(error.message);
@@ -149,9 +146,9 @@ const updateAvatar = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
-    const user = await UserModel.findById(req.params.id);
+    const user = await UserModel.findById(req.params.userID);
     if (!user) return res.status(404).json({ message: "User not found" });
-    await UserModel.findByIdAndRemove(req.params.id);
+    await UserModel.findByIdAndRemove(req.params.userID);
     res.status(200).json({ message: "User successfully deleted", user });
   } catch (error) {
     console.log(error.message);

@@ -9,6 +9,6 @@ router.get("/api/users", checkToken, userController.getUsers);
 router.put("/api/user/:userID", checkToken, userController.updateUser);
 router.put("/api/user/avatar/:userID", checkToken, uploadAvatar.single('image'), userController.updateAvatar);
 router.delete("/api/user/:userID", checkToken, userController.deleteUser);
-router.get("/api/logout", checkToken, userController.logout);
+router.post("/api/logout", checkToken, userController.logout);
 
 module.exports = router;

@@ -22,10 +22,10 @@ Then you can Run the following command to install the remaining dependencies.
 
 ## Deploy
 
-To deploy this project run.
+To deploy this project run:
 
 ```bash
-  npm start
+  npm run start_dev
 ```
 
 ## Environment Variables

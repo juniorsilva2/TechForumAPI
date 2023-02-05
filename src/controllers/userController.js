@@ -51,8 +51,10 @@ const register = async (req, res) => {
   if (password !== confirmPassword)
     return res.status(400).json({ message: "Passwords do not match" });
 
-  const userExist = await UserModel.findOne({ email });
-  if (userExist) return res.status(422).json({ message: "User already registered, try using another email" });
+  const emailExist = await UserModel.findOne({ email });
+  if (emailExist) return res.status(422).json({ message: "User already registered, try using another email" });
+  const userNameExist = await UserModel.findOne({ userName });
+  if (userNameExist) return res.status(422).json({ message: "User already registered, try using another user name" });
 
   const hashedPassword = await bcrypt.hash(
     password,

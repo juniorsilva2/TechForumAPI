@@ -1,6 +1,7 @@
 const PostModel = require("../models/postModel");
 const UserModel = require("../models/userModel");
 const TopicModel = require("../models/topicModel");
+const CommentModel = require("../models/commentModel");
 
 const createPost = async (req, res) => {
   try {

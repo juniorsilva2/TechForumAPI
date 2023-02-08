@@ -83,8 +83,9 @@ const deletePost = async (req, res) => {
   try {
     const post = await PostModel.findById(req.params.postID);
     if (!post) return res.status(404).json({ message: "Post not found" });
+    const comments = await CommentModel.deleteMany({ post: req.params.postID });
     await PostModel.findByIdAndDelete(req.params.postID);
-    res.status(200).json({ message: "Post successfully deleted", post });
+    res.status(200).json({ message: "Post and comments successfully deleted", post, comments });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: "Server side error ocurred" });
